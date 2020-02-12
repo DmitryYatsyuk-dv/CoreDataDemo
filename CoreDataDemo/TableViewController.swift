@@ -13,9 +13,25 @@ class TableViewController: UITableViewController {
     var toDoItems: [String] = []
     
     @IBAction func addTask(_ sender: UIBarButtonItem) {
-    
+        let ac = UIAlertController(title: "Add Task", message: "add new task", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Ok", style: .default) { action in
+            
+            // A new position will always be added to the very top of the list.
+            let textField = ac.textFields?[0]
+            self.toDoItems.insert((textField?.text)!, at: 0)
+            
+            self.tableView.reloadData()
+        }
+
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
+        ac.addTextField {
+            textField in
         
+        }
+        ac.addAction(ok)
+        ac.addAction(cancel)
+        present(ac, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -46,7 +62,8 @@ class TableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         cell.textLabel?.text = toDoItems[indexPath.row]
-
+        cell.textLabel?.textAlignment = .center
+        
         return cell
     }
 
